@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { Sparkles, Plus, X, Flower2 } from 'lucide-react';
+import { Plus, X, Flower2 } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
 
 export default function HappinessGarden({

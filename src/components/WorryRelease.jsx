@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Wind, Send, RefreshCw } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
 
-export default function WorryRelease({ visitorName, isDarkRoom = false }) {
+export default function WorryRelease({ visitorName = 'TASHMI', isDarkRoom = false }) {
   const [worryText, setWorryText] = useState('');
   const [isReleasing, setIsReleasing] = useState(false);
   const [hasReleased, setHasReleased] = useState(false);

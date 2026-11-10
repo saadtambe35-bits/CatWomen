@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Sun, Sparkles, RefreshCw, Bookmark, Heart, X, Quote, Star } from 'lucide-react';
+import { Sun, RefreshCw, Heart, X } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
 
 export default function JarOfSunshine({

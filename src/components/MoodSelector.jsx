@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, Sparkles, Coffee, Smile, Wind, Compass, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Heart, Sparkles, Coffee, Wind, ArrowRight } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
 
 export default function MoodSelector({

@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { Heart, Fish, CircleDot, Moon, Volume2, Coffee, Award, Star } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
 
+const DEFAULT_CATS = {
+  sleepy: { hearts: 0, fishFed: 0, goldenFed: 0, status: 'idle' },
+  orange: { hearts: 0, fishFed: 0, goldenFed: 0, status: 'idle' },
+  white: { hearts: 0, fishFed: 0, goldenFed: 0, status: 'idle' },
+  black: { hearts: 0, fishFed: 0, goldenFed: 0, status: 'idle' }
+};
+
 export default function CatCafe({
   visitorName = 'TASHMI',
-  catStats = {},
-  updateCat,
+  catStats = DEFAULT_CATS,
+  updateCat = () => {},
   unlockedGoldenTreat = false
 }) {
   const [activeCatIndex, setActiveCatIndex] = useState(0);
@@ -175,40 +182,44 @@ export default function CatCafe({
     }
   ];
 
-  const currentCat = cats[activeCatIndex];
-  const currentStats = catStats[currentCat.id] || { hearts: 0, fishFed: 0, goldenFed: 0 };
+  const currentCat = (cats && cats[activeCatIndex]) || cats[0];
+  const currentStats = (catStats && currentCat && catStats[currentCat.id]) || (DEFAULT_CATS && currentCat && DEFAULT_CATS[currentCat.id]) || { hearts: 0, fishFed: 0, goldenFed: 0 };
 
   const handleAction = (status) => {
     sound.init();
     setLocalStatus(status);
 
-    const list = currentCat.dialogues[status] || currentCat.dialogues.idle;
-    setLocalDialogueIndex((prev) => (prev + 1) % list.length);
+    const list = (currentCat?.dialogues && (currentCat.dialogues[status] || currentCat.dialogues.idle)) || [];
+    if (list.length > 0) {
+      setLocalDialogueIndex((prev) => (prev + 1) % list.length);
+    }
 
     if (status === 'pet') {
       sound.playPurr(2);
-      sound.playMeow(currentCat.soundType);
-      if (updateCat) updateCat(currentCat.id, 'pet');
+      sound.playMeow(currentCat?.soundType || 'sleepy');
+      if (updateCat && currentCat) updateCat(currentCat.id, 'pet');
     } else if (status === 'feed') {
       sound.playCatch();
-      if (updateCat) updateCat(currentCat.id, 'feed');
+      if (updateCat && currentCat) updateCat(currentCat.id, 'feed');
     } else if (status === 'golden') {
       sound.playCatch();
       sound.playBloom();
       sound.playPurr(3);
-      if (updateCat) updateCat(currentCat.id, 'feedGolden');
+      if (updateCat && currentCat) updateCat(currentCat.id, 'feedGolden');
     } else if (status === 'play') {
       sound.playSparkle();
     } else if (status === 'sleep') {
       sound.playMeow('sleepy');
-      if (updateCat) updateCat(currentCat.id, 'status', 'sleep');
+      if (updateCat && currentCat) updateCat(currentCat.id, 'status', 'sleep');
     }
   };
 
   const getDialogueText = () => {
-    const list = currentCat.dialogues[localStatus] || currentCat.dialogues.idle;
-    const idx = localDialogueIndex % list.length;
-    return list[idx].replace(/Tashmi|TASHMI/g, visitorName);
+    if (!currentCat?.dialogues) return '';
+    const list = currentCat.dialogues[localStatus] || currentCat.dialogues.idle || [];
+    if (!Array.isArray(list) || list.length === 0) return '';
+    const idx = Math.abs(localDialogueIndex) % list.length;
+    return (list[idx] || '').replace(/Tashmi|TASHMI/g, visitorName || 'TASHMI');
   };
 
   return (
@@ -231,7 +242,7 @@ export default function CatCafe({
       <div className="flex flex-wrap items-center justify-center gap-2.5 mb-8">
         {cats.map((cat, idx) => {
           const isActive = activeCatIndex === idx;
-          const stats = catStats[cat.id] || { hearts: 0 };
+          const stats = (catStats && catStats[cat.id]) || { hearts: 0 };
           return (
             <button
               key={cat.id}

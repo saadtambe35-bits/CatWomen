@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import confetti from 'canvas-confetti';
-import { RotateCcw, Award, ArrowLeft, ArrowRight, Play, Star } from 'lucide-react';
+import { RotateCcw, Award, ArrowLeft, ArrowRight, Play, Star, Gamepad2, Trophy } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
 
 export default function FishCatcherGame({
   visitorName = 'TASHMI',
   fishHighScore = 0,
-  recordFishScore,
+  recordFishScore = () => {},
   unlockedGoldenTreat = false
 }) {
   const canvasRef = useRef(null);
@@ -233,7 +233,7 @@ export default function FishCatcherGame({
     };
   }, [isPlaying, unlockedGoldenTreat, recordFishScore]);
 
-  const activeHigh = Math.max(fishHighScore, score);
+  const activeHigh = Math.max(fishHighScore || 0, score || 0);
 
   return (
     <section id="mini-game" className="py-12 px-4 max-w-4xl mx-auto">

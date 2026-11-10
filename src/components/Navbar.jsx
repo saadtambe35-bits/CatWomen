@@ -210,6 +210,25 @@ export default function Navbar({
               <CloudRain size={14} />
             </button>
 
+            {/* Ambient Falling Particles (Sakura/Stars) Toggle */}
+            {setPetalsEnabled && (
+              <button
+                onClick={() => setPetalsEnabled(!petalsEnabled)}
+                className={`p-2 rounded-full border transition-colors cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center ${
+                  petalsEnabled
+                    ? isCalmRoom
+                      ? 'bg-indigo-900/90 text-indigo-200 border-indigo-700'
+                      : 'bg-pink-100 text-pink-700 border-pink-300'
+                    : isCalmRoom
+                    ? 'bg-slate-900/80 border-indigo-800/60 text-indigo-400/50 hover:text-indigo-200'
+                    : 'bg-white border-pink-200 text-stone-400 hover:text-pink-600'
+                }`}
+                title={petalsEnabled ? (isCalmRoom ? 'Disable stars' : 'Disable petals') : (isCalmRoom ? 'Enable stars' : 'Enable petals')}
+              >
+                <Sparkles size={14} />
+              </button>
+            )}
+
             {/* Sound FX Mute Toggle */}
             <button
               onClick={toggleMute}

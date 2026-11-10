@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Wind, Play, Pause, RotateCcw, Volume2, VolumeX } from 'lucide-react';
+import { Wind, Play, Pause, RotateCcw, Volume2, VolumeX, Sparkles } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
 
-export default function BreathingCorner({ visitorName, isDarkRoom = false }) {
+export default function BreathingCorner({ visitorName = 'TASHMI', isDarkRoom = false }) {
   const [isActive, setIsActive] = useState(false);
   const [phase, setPhase] = useState('in'); // 'in' (4s) | 'hold' (4s) | 'out' (6s)
   const [countdown, setCountdown] = useState(4);
@@ -83,7 +83,7 @@ export default function BreathingCorner({ visitorName, isDarkRoom = false }) {
     }
   };
 
-  const current = phaseInfo[phase];
+  const current = phaseInfo[phase] || phaseInfo.in;
 
   return (
     <section id="breathing-corner" className="py-12 px-4 max-w-4xl mx-auto">

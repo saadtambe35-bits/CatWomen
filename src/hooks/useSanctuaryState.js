@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const STORAGE_KEY = 'tashmi_sanctuary_v1';
+const STORAGE_KEY = 'tashmi_sanctuary_v2';
 
-const defaultState = {
+export const DEFAULT_STATE = {
   userName: 'TASHMI',
   activeRoom: 'lounge', // 'lounge' | 'cafe' | 'calm' | 'keepsakes'
   currentMood: null,
@@ -19,44 +19,78 @@ const defaultState = {
   hasReadLetter: false
 };
 
+function deepMerge(target, source) {
+  if (!source || typeof source !== 'object' || Array.isArray(source)) {
+    return source !== undefined ? source : target;
+  }
+  const output = { ...target };
+  for (const key of Object.keys(source)) {
+    if (
+      source[key] &&
+      typeof source[key] === 'object' &&
+      !Array.isArray(source[key]) &&
+      target[key] &&
+      typeof target[key] === 'object' &&
+      !Array.isArray(target[key])
+    ) {
+      output[key] = deepMerge(target[key], source[key]);
+    } else if (source[key] !== undefined) {
+      output[key] = source[key];
+    }
+  }
+  return output;
+}
+
 export function useSanctuaryState() {
   const [state, setState] = useState(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      // Check for v2 state first
+      const storedV2 = localStorage.getItem(STORAGE_KEY);
+      const storedV1 = !storedV2 ? localStorage.getItem('tashmi_sanctuary_v1') : null;
+      const rawStored = storedV2 || storedV1;
       const legacyLetterRead = localStorage.getItem('tashmi_letter_read') === 'true';
 
-      if (stored) {
-        const parsed = JSON.parse(stored);
+      if (rawStored) {
+        const parsed = JSON.parse(rawStored);
+        const merged = deepMerge(DEFAULT_STATE, parsed);
+
+        // Name normalization: always maintain TASHMI
         let normalizedName = 'TASHMI';
-        if (parsed.userName) {
-          const upper = parsed.userName.toUpperCase();
+        if (merged.userName) {
+          const upper = String(merged.userName).toUpperCase();
           if (upper === 'TASHMI' || upper === 'RASHMI' || upper === 'XYZ') {
             normalizedName = 'TASHMI';
           } else {
-            normalizedName = parsed.userName;
+            normalizedName = merged.userName;
           }
         }
+        merged.userName = normalizedName;
 
-        return {
-          ...defaultState,
-          ...parsed,
-          userName: normalizedName,
-          hasReadLetter: parsed.hasReadLetter ?? legacyLetterRead,
-          catStats: {
-            ...defaultState.catStats,
-            ...(parsed.catStats || {})
-          }
-        };
+        if (legacyLetterRead) {
+          merged.hasReadLetter = true;
+        }
+
+        // Validate activeRoom
+        const validRooms = ['lounge', 'cafe', 'calm', 'keepsakes'];
+        if (!validRooms.includes(merged.activeRoom)) {
+          merged.activeRoom = 'lounge';
+        }
+
+        // Ensure array safety
+        if (!Array.isArray(merged.plantedFlowers)) merged.plantedFlowers = [];
+        if (!Array.isArray(merged.openedSunshines)) merged.openedSunshines = [];
+
+        return merged;
       } else if (legacyLetterRead) {
         return {
-          ...defaultState,
+          ...DEFAULT_STATE,
           hasReadLetter: true
         };
       }
     } catch (e) {
-      console.warn('Failed to load sanctuary state from localStorage:', e);
+      console.warn('Failed to load sanctuary state from localStorage, using defaults:', e);
     }
-    return defaultState;
+    return DEFAULT_STATE;
   });
 
   // Sync state changes to localStorage
@@ -88,7 +122,12 @@ export function useSanctuaryState() {
 
   const updateCat = useCallback((catId, action, value = 1) => {
     setState((prev) => {
-      const currentCat = prev.catStats[catId] || { hearts: 0, fishFed: 0, goldenFed: 0, status: 'idle' };
+      const currentCat = (prev.catStats && prev.catStats[catId]) || {
+        hearts: 0,
+        fishFed: 0,
+        goldenFed: 0,
+        status: 'idle'
+      };
       const updated = { ...currentCat };
 
       if (action === 'pet') updated.hearts = (updated.hearts || 0) + value;
@@ -102,7 +141,7 @@ export function useSanctuaryState() {
       return {
         ...prev,
         catStats: {
-          ...prev.catStats,
+          ...(prev.catStats || {}),
           [catId]: updated
         }
       };
@@ -118,8 +157,8 @@ export function useSanctuaryState() {
 
   const recordFishScore = useCallback((score, fishCaught) => {
     setState((prev) => {
-      const newHigh = Math.max(prev.fishHighScore || 0, score);
-      const shouldUnlock = prev.unlockedGoldenTreat || fishCaught >= 10;
+      const newHigh = Math.max(prev.fishHighScore || 0, score || 0);
+      const shouldUnlock = Boolean(prev.unlockedGoldenTreat || (fishCaught && fishCaught >= 10));
       return {
         ...prev,
         fishHighScore: newHigh,

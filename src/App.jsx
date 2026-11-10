@@ -15,6 +15,7 @@ import CarePackage from './components/CarePackage';
 import LetterEnvelope from './components/LetterEnvelope';
 import CornerCompanionCat from './components/CornerCompanionCat';
 import Footer from './components/Footer';
+import RoomErrorBoundary from './components/RoomErrorBoundary';
 import { useSanctuaryState } from './hooks/useSanctuaryState';
 import { sound } from './utils/soundEngine';
 
@@ -97,68 +98,70 @@ export default function App() {
 
       {/* 4 State-Based Sanctuary Rooms */}
       <main className="relative z-20 pb-24 md:pb-8 max-w-6xl mx-auto px-3 sm:px-6">
-        {/* ROOM 1: Cozy Lounge */}
-        {activeRoom === 'lounge' && (
-          <div key="room-lounge" className="animate-room-enter">
-            <Hero
-              visitorName={userName}
-              onStartJourney={handleStartJourney}
-              onOpenLetter={handleOpenLetter}
-              hasReadLetter={hasReadLetter}
-            />
-            <MoodSelector
-              visitorName={userName}
-              currentMood={currentMood}
-              setCurrentMood={setCurrentMood}
-              setActiveRoom={setActiveRoom}
-            />
-            <CozyTeaStation visitorName={userName} />
-          </div>
-        )}
+        <RoomErrorBoundary key={activeRoom} roomName={activeRoom}>
+          {/* ROOM 1: Cozy Lounge */}
+          {activeRoom === 'lounge' && (
+            <div key="room-lounge" className="animate-room-enter">
+              <Hero
+                visitorName={userName}
+                onStartJourney={handleStartJourney}
+                onOpenLetter={handleOpenLetter}
+                hasReadLetter={hasReadLetter}
+              />
+              <MoodSelector
+                visitorName={userName}
+                currentMood={currentMood}
+                setCurrentMood={setCurrentMood}
+                setActiveRoom={setActiveRoom}
+              />
+              <CozyTeaStation visitorName={userName} />
+            </div>
+          )}
 
-        {/* ROOM 2: Cat Café & Play */}
-        {activeRoom === 'cafe' && (
-          <div key="room-cafe" className="animate-room-enter pt-4">
-            <CatCafe
-              visitorName={userName}
-              catStats={catStats}
-              updateCat={updateCat}
-              unlockedGoldenTreat={unlockedGoldenTreat}
-            />
-            <CatPolaroids visitorName={userName} />
-            <FishCatcherGame
-              visitorName={userName}
-              fishHighScore={fishHighScore}
-              recordFishScore={recordFishScore}
-              unlockedGoldenTreat={unlockedGoldenTreat}
-            />
-          </div>
-        )}
+          {/* ROOM 2: Cat Café & Play */}
+          {activeRoom === 'cafe' && (
+            <div key="room-cafe" className="animate-room-enter pt-4">
+              <CatCafe
+                visitorName={userName}
+                catStats={catStats}
+                updateCat={updateCat}
+                unlockedGoldenTreat={unlockedGoldenTreat}
+              />
+              <CatPolaroids visitorName={userName} />
+              <FishCatcherGame
+                visitorName={userName}
+                fishHighScore={fishHighScore}
+                recordFishScore={recordFishScore}
+                unlockedGoldenTreat={unlockedGoldenTreat}
+              />
+            </div>
+          )}
 
-        {/* ROOM 3: Starlight Calm */}
-        {activeRoom === 'calm' && (
-          <div key="room-calm" className="animate-room-enter pt-4">
-            <BreathingCorner visitorName={userName} isDarkRoom={true} />
-            <WorryRelease visitorName={userName} isDarkRoom={true} />
-          </div>
-        )}
+          {/* ROOM 3: Starlight Calm */}
+          {activeRoom === 'calm' && (
+            <div key="room-calm" className="animate-room-enter pt-4">
+              <BreathingCorner visitorName={userName} isDarkRoom={true} />
+              <WorryRelease visitorName={userName} isDarkRoom={true} />
+            </div>
+          )}
 
-        {/* ROOM 4: Garden & Keepsakes */}
-        {activeRoom === 'keepsakes' && (
-          <div key="room-keepsakes" className="animate-room-enter pt-4">
-            <HappinessGarden
-              visitorName={userName}
-              plantedFlowers={plantedFlowers}
-              addPlantedFlower={addPlantedFlower}
-            />
-            <JarOfSunshine
-              visitorName={userName}
-              openedSunshines={openedSunshines}
-              markSunshineOpened={markSunshineOpened}
-            />
-            <CarePackage visitorName={userName} />
-          </div>
-        )}
+          {/* ROOM 4: Garden & Keepsakes */}
+          {activeRoom === 'keepsakes' && (
+            <div key="room-keepsakes" className="animate-room-enter pt-4">
+              <HappinessGarden
+                visitorName={userName}
+                plantedFlowers={plantedFlowers}
+                addPlantedFlower={addPlantedFlower}
+              />
+              <JarOfSunshine
+                visitorName={userName}
+                openedSunshines={openedSunshines}
+                markSunshineOpened={markSunshineOpened}
+              />
+              <CarePackage visitorName={userName} />
+            </div>
+          )}
+        </RoomErrorBoundary>
       </main>
 
       {/* Contextual Companion Cat (Positioned above mobile bottom bar) */}

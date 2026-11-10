@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-poppins: 'Poppins', sans-serif;
+    --font-playfair: 'Playfair Display', serif;
+    --font-caveat: 'Caveat', cursive;
+    --font-quicksand: 'Quicksand', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-quicksand), var(--font-poppins), sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .font-playfair {
+    font-family: var(--font-playfair), serif;
+  }
+
+  .font-handwritten {
+    font-family: var(--font-caveat), cursive;
+  }
+
+  .font-poppins {
+    font-family: var(--font-poppins), sans-serif;
+  }
+}
+
+/* Custom Soft Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #F3C4D7;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E8A7C1;
+}
+
+/* Keyframe animations for Kawaii elements */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes tailWag {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(12deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+}
+
+@keyframes purrVibe {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+  }
+  25% {
+    transform: scale(1.02) translateY(-1px);
+  }
+  50% {
+    transform: scale(0.99) translateY(1px);
+  }
+  75% {
+    transform: scale(1.01) translateY(-0.5px);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 182, 193, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 182, 193, 0.8), 0 0 45px rgba(221, 160, 221, 0.5);
+  }
+}
+
+@keyframes butterflyFlutter {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate(15px, -18px) rotate(8deg) scale(1.05);
+  }
+  50% {
+    transform: translate(-10px, -28px) rotate(-6deg) scale(0.98);
+  }
+  75% {
+    transform: translate(12px, -12px) rotate(4deg) scale(1.02);
+  }
+}
+
+@keyframes swayPetal {
+  0%, 100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+/* Room Transition */
+@keyframes roomFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Float Up And Fade for Worry Release Lantern */
+@keyframes floatUpAndFade {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 0 15px rgba(255, 183, 3, 0.7));
+  }
+  30% {
+    transform: translateY(-80px) scale(0.92) rotate(2deg);
+    opacity: 0.95;
+    filter: drop-shadow(0 0 25px rgba(255, 209, 102, 0.9));
+  }
+  70% {
+    transform: translateY(-240px) scale(0.7) rotate(-3deg);
+    opacity: 0.75;
+    filter: drop-shadow(0 0 35px rgba(255, 230, 150, 0.9));
+  }
+  100% {
+    transform: translateY(-460px) scale(0.35) rotate(4deg);
+    opacity: 0;
+    filter: drop-shadow(0 0 45px rgba(255, 255, 255, 1));
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: floatGentle 3s ease-in-out infinite;
+}
+
+.animate-tail {
+  animation: tailWag 3.2s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.animate-purr {
+  animation: purrVibe 0.3s ease-in-out infinite;
+}
+
+.animate-twinkle {
+  animation: twinkle 2.5s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.animate-butterfly {
+  animation: butterflyFlutter 6s ease-in-out infinite;
+}
+
+.animate-sway {
+  animation: swayPetal 4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.animate-room-enter {
+  animation: roomFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float-up-fade {
+  animation: floatUpAndFade 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scaleUp {
+  animation: modalScaleUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Glassmorphism cute panels - Warm Contrast */
+.glass-panel {
+  background: rgba(255, 253, 249, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 225, 235, 0.9);
+  box-shadow: 0 10px 30px -5px rgba(225, 175, 209, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+}
+
+.glass-panel-dark {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(147, 51, 234, 0.2);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 210, 230, 0.9);
+  box-shadow: 0 4px 12px rgba(240, 185, 205, 0.25);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px -8px rgba(235, 150, 195, 0.3);
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

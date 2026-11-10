@@ -1,0 +1,22 @@
+{
+  "name": "TASHMI's Little World 🐾",
+  "short_name": "TASHMI's World",
+  "description": "A warm digital happiness sanctuary created just to bring you peace and a smile.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF0F5",
+  "theme_color": "#FFF0F5",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
+
